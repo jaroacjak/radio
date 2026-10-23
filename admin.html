@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0d18">
+  <title>Administrácia rádia</title>
+
+  <style>
+    :root {
+      --accent: #7655ff;
+      --panel: #171a2b;
+      --bg: #0b0d18;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      min-height: 100vh;
+      background: var(--bg);
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    main {
+      max-width: 650px;
+      margin: 20px auto;
+      padding: 28px;
+      background: var(--panel);
+      border: 1px solid #343956;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px #0005;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 27px;
+    }
+
+    .subtitle {
+      color: #a8aec7;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    fieldset {
+      margin: 22px 0;
+      padding: 18px;
+      border: 1px solid #343956;
+      border-radius: 12px;
+    }
+
+    legend {
+      padding: 0 8px;
+      color: #b9aaff;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin-top: 17px;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px;
+      color: white;
+      background: #0b0d18;
+      border: 1px solid #414761;
+      border-radius: 8px;
+      outline-color: var(--accent);
+    }
+
+    input[type="color"] {
+      display: block;
+      width: 100%;
+      height: 44px;
+      margin-top: 8px;
+      padding: 3px;
+      background: #0b0d18;
+      border: 1px solid #414761;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      margin-top: 12px;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .check input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      color: white;
+      background: var(--accent);
+      border: 0;
+      border-radius: 9px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .secondary {
+      background: #30354d;
+    }
+
+    #message {
+      padding: 12px 0 0;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .preview {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #0b0d18;
+      border: 1px solid #343956;
+    }
+
+    .preview img {
+      display: block;
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .note {
+      color: #a8aec7;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>📻 Administrácia rádia</h1>
+    <p class="subtitle">
+      Nastav názov, stream, logo, farby a vzhľad prehrávača.
+      Zmeny sa po uložení načítajú aj na stránke rádia.
+    </p>
+
+    <form id="settingsForm">
+      <fieldset>
+        <legend>Základné nastavenia</legend>
+
+        <label>Názov rádia
+          <input type="text" name="name"
+            placeholder="Moje Rádio" required maxlength="100">
+        </label>
+
+        <label>Popis rádia
+          <input type="text" name="description"
+            placeholder="Tvoja hudba, tvoje rádio" maxlength="250">
+        </label>
+
+        <label>URL rádiového streamu
+          <input type="url" name="streamUrl"
+            placeholder="https://server.sk/stream" required>
+        </label>
+
+        <label>URL loga rádia
+          <input type="url" name="logoUrl"
+            placeholder="https://web.sk/logo.png">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Dizajn a farby</legend>
+
+        <label>Farba pozadia
+          <input type="color" name="backgroundColor" value="#090b14">
+        </label>
+
+        <label>Hlavná farba
+          <input type="color" name="accentColor" value="#7655ff">
+        </label>
+
+        <label>Druhá farba
+          <input type="color" name="secondaryColor" value="#20c9d8">
+        </label>
+
+        <label class="check">
+          <input type="checkbox" name="discoMode">
+          Zapnúť diskotékový režim
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Prehrávač a skladba</legend>
+
+        <label>Predvolená hlasitosť:
+          <strong id="volumeValue">80 %</strong>
+          <input type="range" name="volume"
+            min="0" max="1" step="0.01" value="0.8">
+        </label>
+
+        <label>Názov skladby
+          <input type="text" name="trackTitle"
+            placeholder="Názov skladby" maxlength="200">
+        </label>
+
+        <label>Interpret
+          <input type="text" name="trackArtist"
+            placeholder="Interpret" maxlength="200">
+        </label>
+      </fieldset>
+
+      <button type="submit" id="saveButton">
+        Uložiť nastavenia
+      </button>
+
+      <button type="button" class="secondary" id="reloadButton">
+        Načítať uložené nastavenia
+      </button>
+    </form>
+
+    <div class="preview">
+      <strong>Náhľad loga</strong>
+      <img id="logoPreview" alt="Náhľad loga rádia"
+        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Crect width='100%25' height='100%25' rx='12' fill='%237655ff'/%3E%3Ctext x='50%25' y='60%25' font-size='45' text-anchor='middle' fill='white'%3E♫%3C/text%3E%3C/svg%3E">
+      <strong id="previewName">Moje Rádio</strong>
+      <p class="note" id="previewDescription">Tvoja hudba, tvoje rádio.</p>
+    </div>
+
+    <p id="message" role="status" aria-live="polite"></p>
+
+    <p class="note">
+      Táto stránka neobsahuje prihlasovací formulár. Databáza musí
+      povoľovať čítanie a zápis podľa svojich bezpečnostných pravidiel.
+      Neotváraj verejný zápis do produkčnej databázy.
+    </p>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+    import {
+      getDatabase,
+      ref,
+      get,
+      set
+    } from
+      "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCssrsw3dAyrTKquI84O4X7S4cdCYaQ6wk",
+      authDomain: "radio-bb4c5.firebaseapp.com",
+      databaseURL: "DOPLN_REALTIME_DATABASE_URL",
+      projectId: "radio-bb4c5",
+      storageBucket: "radio-bb4c5.firebasestorage.app",
+      messagingSenderId: "995196476881",
+      appId: "1:995196476881:web:954ada13c38f4b2c2cd4f0"
+    };
+
+    const form = document.getElementById("settingsForm");
+    const message = document.getElementById("message");
+    const saveButton = document.getElementById("saveButton");
+    const volumeInput = form.elements.namedItem("volume");
+
+    const defaults = {
+      name: "Moje Rádio",
+      description: "Tvoja hudba, tvoje rádio.",
+      streamUrl: "",
+      logoUrl: "",
+      backgroundColor: "#090b14",
+      accentColor: "#7655ff",
+      secondaryColor: "#20c9d8",
+      discoMode: false,
+      volume: 0.8,
+      trackTitle: "Online vysielanie",
+      trackArtist: "Počúvaj naživo"
+    };
+
+    let db = null;
+
+    function showMessage(text, success = false) {
+      message.textContent = text;
+      message.style.color = success ? "#50efae" : "#ffb4b4";
+    }
+
+    function updatePreview() {
+      document.getElementById("volumeValue").textContent =
+        Math.round(Number(volumeInput.value) * 100) + "%";
+
+      document.getElementById("previewName").textContent =
+        form.elements.name.value || "Moje Rádio";
+
+      document.getElementById("previewDescription").textContent =
+        form.elements.description.value || "";
+
+      const logo = form.elements.logoUrl.value.trim();
+
+      if (logo) {
+        document.getElementById("logoPreview").src = logo;
+      }
+    }
+
+    function applyForm(data) {
+      for (const [key, value] of Object.entries(data)) {
+        const field = form.elements.namedItem(key);
+        if (!field) continue;
+
+        if (field.type === "checkbox") {
+          field.checked = value === true;
+        } else {
+          field.value = String(value ?? "");
+        }
+      }
+
+      updatePreview();
+    }
+
+    async function loadSettings() {
+      if (!db) return;
+
+      showMessage("Načítavam nastavenia…");
+
+      try {
+        const snapshot = await get(ref(db, "radioSettings"));
+
+        if (snapshot.exists()) {
+          applyForm({ ...defaults, ...snapshot.val() });
+          showMessage("Nastavenia boli načítané.", true);
+        } else {
+          applyForm(defaults);
+          showMessage("Zatiaľ nie sú uložené žiadne nastavenia.", true);
+        }
+      } catch (error) {
+        console.error(error);
+        showMessage(
+          "Načítanie zlyhalo. Skontroluj databázovú URL a pravidlá Firebase."
+        );
+      }
+    }
+
+    volumeInput.addEventListener("input", updatePreview);
+    form.elements.name.addEventListener("input", updatePreview);
+    form.elements.description.addEventListener("input", updatePreview);
+    form.elements.logoUrl.addEventListener("input", updatePreview);
+
+    document.getElementById("logoPreview").addEventListener("error", () => {
+      showMessage("Logo sa nepodarilo načítať. Skontroluj jeho URL.");
+    });
+
+    document.getElementById("reloadButton").addEventListener(
+      "click", loadSettings
+    );
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+
+      if (!db) {
+        showMessage("Najprv nastav databázovú URL Firebase.");
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      data.discoMode = form.elements.discoMode.checked;
+      data.volume = Number(volumeInput.value);
+
+      for (const key of [
+        "name", "description", "streamUrl", "logoUrl",
+        "backgroundColor", "accentColor", "secondaryColor",
+        "trackTitle", "trackArtist"
+      ]) {
+        data[key] = String(data[key] ?? "").trim();
+      }
+
+      if (!data.name || !data.streamUrl) {
+        showMessage("Vyplň názov rádia aj URL streamu.");
+        return;
+      }
+
+      try {
+        const stream = new URL(data.streamUrl);
+        if (!["https:", "http:"].includes(stream.protocol)) {
+          throw new Error("Neplatný protokol streamu.");
+        }
+      } catch {
+        showMessage("Zadaj platnú URL adresu streamu.");
+        return;
+      }
+
+      saveButton.disabled = true;
+      showMessage("Ukladám nastavenia…");
+
+      try {
+        await set(ref(db, "radioSettings"), data);
+        showMessage("Nastavenia rádia boli úspešne uložené.", true);
+        updatePreview();
+      } catch (error) {
+        console.error(error);
+        showMessage(
+          "Uloženie zlyhalo. Skontroluj Firebase URL a pravidlá databázy."
+        );
+      } finally {
+        saveButton.disabled = false;
+      }
+    });
+
+    try {
+      if (!firebaseConfig.databaseURL ||
+          firebaseConfig.databaseURL === "DOPLN_REALTIME_DATABASE_URL") {
+        throw new Error(
+          "Doplň databaseURL z Firebase Console do súboru admin.html."
+        );
+      }
+
+      db = getDatabase(initializeApp(firebaseConfig));
+      await loadSettings();
+    } catch (error) {
+      showMessage(error.message);
+    }
+
+    applyForm(defaults);
+  </script>
+</body>
+</html>
