@@ -14,7 +14,9 @@
       --accent2: #20c9d8;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -24,8 +26,12 @@
       place-items: center;
       font-family: Arial, sans-serif;
       color: white;
-      background: var(--bg);
-      background-image: radial-gradient(ellipse at top, var(--accent), transparent 65%);
+      background-color: var(--bg);
+      background-image: radial-gradient(
+        ellipse at top,
+        var(--accent),
+        transparent 65%
+      );
       background-attachment: fixed;
     }
 
@@ -34,10 +40,10 @@
     }
 
     @keyframes disco {
-      0% { background-color: #18051f; }
-      25% { background-color: #061b36; }
-      50% { background-color: #251000; }
-      75% { background-color: #062319; }
+      0%   { background-color: #18051f; }
+      25%  { background-color: #061b36; }
+      50%  { background-color: #251000; }
+      75%  { background-color: #062319; }
       100% { background-color: #18051f; }
     }
 
@@ -54,12 +60,17 @@
     }
 
     .logo {
+      display: block;
       width: 140px;
       height: 140px;
       margin: 0 auto 22px;
       border-radius: 22px;
       object-fit: cover;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent2)
+      );
     }
 
     .live {
@@ -69,9 +80,15 @@
       font-weight: bold;
     }
 
-    h1 { font-size: 30px; overflow-wrap: anywhere; }
+    h1 {
+      font-size: 30px;
+      overflow-wrap: anywhere;
+    }
 
-    .description, .artist, .status, footer {
+    .description,
+    .artist,
+    .status,
+    footer {
       color: #b8bdd2;
     }
 
@@ -95,7 +112,8 @@
       overflow-wrap: anywhere;
     }
 
-    .artist, .status {
+    .artist,
+    .status {
       font-size: 13px;
       margin-top: 9px;
     }
@@ -106,53 +124,111 @@
       gap: 12px;
     }
 
-    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
 
-    footer { margin-top: 26px; font-size: 12px; }
+    footer {
+      margin-top: 26px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 380px) {
+      .radio {
+        padding: 24px 16px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+    }
 
     @media (prefers-reduced-motion: reduce) {
-      body.disco { animation: none; }
+      body.disco {
+        animation: none;
+      }
     }
   </style>
 </head>
+
 <body>
   <main class="radio">
-    <img class="logo" id="logo" alt="Logo rádia"
-      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Crect width='100%25' height='100%25' fill='%237655ff'/%3E%3Ctext x='50%25' y='58%25' font-size='60' text-anchor='middle' fill='white'%3E♫%3C/text%3E%3C/svg%3E">
+
+    <img
+      class="logo"
+      id="logo"
+      alt="Logo rádia"
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Crect width='100%25' height='100%25' fill='%237655ff'/%3E%3Ctext x='50%25' y='58%25' font-size='60' text-anchor='middle' fill='white'%3E♫%3C/text%3E%3C/svg%3E"
+    >
 
     <div class="live">● ONLINE RADIO</div>
+
     <h1 id="radioName">Moje Rádio</h1>
-    <div class="description" id="description">Tvoja hudba, tvoje rádio.</div>
+
+    <div class="description" id="description">
+      Tvoja hudba, tvoje rádio.
+    </div>
 
     <section class="track" aria-live="polite">
       <div class="label">TERAZ HRÁ</div>
-      <div class="track-title" id="trackTitle">Online vysielanie</div>
-      <div class="artist" id="trackArtist">Počúvaj naživo</div>
+
+      <div class="track-title" id="trackTitle">
+        Online vysielanie
+      </div>
+
+      <div class="artist" id="trackArtist">
+        Počúvaj naživo
+      </div>
     </section>
 
-    <div class="status" id="status">Načítavam rádio…</div>
-
-    <div class="volume">
-      <span>🔈</span>
-      <input id="volume" type="range" min="0" max="1"
-        step="0.01" value="0.8" aria-label="Hlasitosť">
-      <span>🔊</span>
+    <div class="status" id="status">
+      Pripájam sa k rádiu…
     </div>
 
-    <footer id="footer">Moje Rádio · Vysielame pre teba</footer>
+    <div class="volume">
+      <span aria-hidden="true">🔈</span>
+
+      <input
+        id="volume"
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.8"
+        aria-label="Hlasitosť"
+      >
+
+      <span aria-hidden="true">🔊</span>
+    </div>
+
+    <footer id="footer">
+      Moje Rádio · Vysielame pre teba
+    </footer>
+
     <audio id="audio" autoplay preload="none"></audio>
+
   </main>
 
   <script type="module">
     import { initializeApp } from
       "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from
+
+    import {
+      getDatabase,
+      ref,
+      onValue
+    } from
       "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
+    // FIREBASE KONFIGURÁCIA
     const firebaseConfig = {
       apiKey: "AIzaSyCssrsw3dAyrTKquI84O4X7S4cdCYaQ6wk",
       authDomain: "radio-bb4c5.firebaseapp.com",
+
+      // DOPLŇ SKUTOČNÚ URL Z FIREBASE CONSOLE
       databaseURL: "DOPLN_REALTIME_DATABASE_URL",
+
       projectId: "radio-bb4c5",
       storageBucket: "radio-bb4c5.firebasestorage.app",
       messagingSenderId: "995196476881",
@@ -162,14 +238,38 @@
     const audio = document.getElementById("audio");
     const status = document.getElementById("status");
     const volume = document.getElementById("volume");
+    const logo = document.getElementById("logo");
 
     let currentStream = "";
+    let firstInteractionAdded = false;
 
-    function color(value, fallback) {
+    // Overenie farby z administrácie.
+    function validColor(value, fallback) {
       return typeof value === "string" &&
-        CSS.supports("color", value) ? value : fallback;
+        CSS.supports("color", value)
+        ? value
+        : fallback;
     }
 
+    // Prijímame len HTTP a HTTPS adresy.
+    function safeUrl(value) {
+      try {
+        const url = new URL(value);
+
+        if (
+          url.protocol === "https:" ||
+          url.protocol === "http:"
+        ) {
+          return url.href;
+        }
+
+        return "";
+      } catch {
+        return "";
+      }
+    }
+
+    // Spustenie rádia.
     async function playRadio() {
       if (!currentStream) {
         status.textContent = "Stream ešte nie je nastavený.";
@@ -179,12 +279,18 @@
       try {
         await audio.play();
         status.textContent = "Práve počúvaš naživo.";
-      } catch {
+      } catch (error) {
         status.textContent =
-          "Automatické prehrávanie je blokované. Povoľ zvuk pre túto stránku v prehliadači.";
+          "Prehrávanie čaká na povolenie prehliadača.";
+
+        console.info(
+          "Prehliadač nepovolil automatické prehrávanie.",
+          error
+        );
       }
     }
 
+    // Stav prehrávania.
     audio.addEventListener("playing", () => {
       status.textContent = "Práve počúvaš naživo.";
     });
@@ -193,73 +299,174 @@
       status.textContent = "Načítavam vysielanie…";
     });
 
-    audio.addEventListener("error", () => {
-      status.textContent = "Stream sa nedá prehrať. Skontroluj URL.";
+    audio.addEventListener("stalled", () => {
+      status.textContent = "Pripojenie k streamu je pomalé…";
     });
 
+    audio.addEventListener("error", () => {
+      status.textContent =
+        "Stream sa nedá prehrať. Skontroluj jeho URL.";
+    });
+
+    audio.addEventListener("pause", () => {
+      if (currentStream && audio.currentTime > 0) {
+        status.textContent = "Prehrávanie je pozastavené.";
+      }
+    });
+
+    // Hlasitosť prehrávača.
     volume.addEventListener("input", () => {
       audio.volume = Number(volume.value);
     });
 
+    // Niektoré prehliadače vyžadujú interakciu používateľa.
+    function enableFirstInteraction() {
+      if (firstInteractionAdded) return;
+
+      firstInteractionAdded = true;
+
+      const start = () => {
+        if (audio.paused && currentStream) {
+          playRadio();
+        }
+
+        document.removeEventListener("click", start);
+        document.removeEventListener("keydown", start);
+        document.removeEventListener("touchstart", start);
+      };
+
+      document.addEventListener("click", start);
+      document.addEventListener("keydown", start);
+      document.addEventListener("touchstart", start, {
+        passive: true
+      });
+    }
+
+    enableFirstInteraction();
+
+    // Načítanie nastavení z Firebase.
     try {
-      if (firebaseConfig.databaseURL === "DOPLN_REALTIME_DATABASE_URL") {
-        throw new Error("Doplň Firebase databaseURL.");
+      if (
+        !firebaseConfig.databaseURL ||
+        firebaseConfig.databaseURL ===
+          "DOPLN_REALTIME_DATABASE_URL"
+      ) {
+        throw new Error(
+          "Doplň URL Firebase Realtime Database."
+        );
       }
 
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
 
-      onValue(ref(db, "radioSettings"), snapshot => {
-        if (!snapshot.exists()) {
-          status.textContent = "Nastav rádio v administrácii.";
-          return;
+      onValue(
+        ref(db, "radioSettings"),
+
+        snapshot => {
+          if (!snapshot.exists()) {
+            status.textContent =
+              "Nastav rádio v administrácii.";
+
+            return;
+          }
+
+          const s = snapshot.val() || {};
+
+          // Názov a popis rádia.
+          const name = s.name || "Moje Rádio";
+
+          document.title = name;
+
+          document.getElementById("radioName").textContent =
+            name;
+
+          document.getElementById("description").textContent =
+            s.description || "Tvoja hudba, tvoje rádio.";
+
+          document.getElementById("footer").textContent =
+            name + " · Vysielame pre teba";
+
+          // Informácie o skladbe.
+          document.getElementById("trackTitle").textContent =
+            s.trackTitle || "Online vysielanie";
+
+          document.getElementById("trackArtist").textContent =
+            s.trackArtist || "Počúvaj naživo";
+
+          // Farby z administrácie.
+          document.documentElement.style.setProperty(
+            "--bg",
+            validColor(s.backgroundColor, "#090b14")
+          );
+
+          document.documentElement.style.setProperty(
+            "--accent",
+            validColor(s.accentColor, "#7655ff")
+          );
+
+          document.documentElement.style.setProperty(
+            "--accent2",
+            validColor(s.secondaryColor, "#20c9d8")
+          );
+
+          // Disco režim.
+          document.body.classList.toggle(
+            "disco",
+            s.discoMode === true
+          );
+
+          // Logo rádia.
+          const logoUrl = safeUrl(s.logoUrl || "");
+
+          if (logoUrl && logo.src !== logoUrl) {
+            logo.src = logoUrl;
+          }
+
+          // Hlasitosť z administrácie.
+          if (typeof s.volume === "number") {
+            const newVolume = Math.max(
+              0,
+              Math.min(1, s.volume)
+            );
+
+            volume.value = String(newVolume);
+            audio.volume = newVolume;
+          }
+
+          // Stream rádia.
+          const streamUrl = safeUrl(s.streamUrl || "");
+
+          if (streamUrl && streamUrl !== currentStream) {
+            currentStream = streamUrl;
+
+            audio.src = streamUrl;
+            audio.load();
+
+            playRadio();
+          } else if (!streamUrl && currentStream) {
+            currentStream = "";
+
+            audio.pause();
+            audio.removeAttribute("src");
+            audio.load();
+
+            status.textContent =
+              "Stream ešte nie je nastavený.";
+          }
+        },
+
+        error => {
+          console.error("Firebase chyba:", error);
+
+          status.textContent =
+            "Nastavenia sa nedajú načítať. Skontroluj Firebase Rules.";
         }
-
-        const s = snapshot.val();
-
-        document.title = s.name || "Moje Rádio";
-        document.getElementById("radioName").textContent =
-          s.name || "Moje Rádio";
-        document.getElementById("description").textContent =
-          s.description || "";
-        document.getElementById("footer").textContent =
-          (s.name || "Moje Rádio") + " · Vysielame pre teba";
-        document.getElementById("trackTitle").textContent =
-          s.trackTitle || "Online vysielanie";
-        document.getElementById("trackArtist").textContent =
-          s.trackArtist || "";
-
-        document.documentElement.style.setProperty(
-          "--bg", color(s.backgroundColor, "#090b14"));
-        document.documentElement.style.setProperty(
-          "--accent", color(s.accentColor, "#7655ff"));
-        document.documentElement.style.setProperty(
-          "--accent2", color(s.secondaryColor, "#20c9d8"));
-
-        document.body.classList.toggle("disco", s.discoMode === true);
-
-        if (s.logoUrl) {
-          document.getElementById("logo").src = s.logoUrl;
-        }
-
-        if (typeof s.volume === "number") {
-          volume.value = String(Math.max(0, Math.min(1, s.volume)));
-          audio.volume = Number(volume.value);
-        }
-
-        if (typeof s.streamUrl === "string" &&
-            s.streamUrl !== currentStream) {
-          currentStream = s.streamUrl;
-          audio.src = currentStream;
-          playRadio();
-        }
-      }, error => {
-        status.textContent = "Nepodarilo sa načítať nastavenia rádia.";
-        console.error(error);
-      });
+      );
     } catch (error) {
-      status.textContent = "Skontroluj konfiguráciu Firebase.";
-      console.error(error);
+      console.error("Konfigurácia rádia:", error);
+
+      status.textContent =
+        "Skontroluj URL a konfiguráciu Firebase.";
     }
   </script>
 </body>
